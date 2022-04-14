@@ -29,42 +29,42 @@
           <img class="element__image" src="./images/karachaevsk.png" alt="Карачаевск">
           <div class="element__description">
             <h2 class="element__title">Карачаевск</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
         <li class="element">
           <img class="element__image" src="./images/elbrus.png" alt="Эльбрус">
           <div class="element__description">
             <h2 class="element__title">Эльбрус</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
         <li class="element">
           <img class="element__image" src="./images/dombay.png" alt="Домбай">
           <div class="element__description">
             <h2 class="element__title">Домбай</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
         <li class="element">
           <img class="element__image" src="./images/elbrus.png" alt="Эльбрус">
           <div class="element__description">
             <h2 class="element__title">Эльбрус</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
         <li class="element">
           <img class="element__image" src="./images/dombay.png" alt="Домбай">
           <div class="element__description">
             <h2 class="element__title">Домбай</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
         <li class="element">
           <img class="element__image" src="./images/karachaevsk.png" alt="Карачаево-Черкессия">
           <div class="element__description">
             <h2 class="element__title">Карачаево-Черкессия</h2>
-            <button class="element__like-disable" type="button" aria-label="оценка фотографии"></button>
+            <button class="element__like" type="button" aria-label="оценка фотографии"></button>
           </div>
         </li>
       </ul>
@@ -78,13 +78,11 @@
     <div class="popup__container">
       <button class="popup__close-button" type="button" aria-label="закрыть окно"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__edit" method="post">
-        <div class="popup__edit-area">
-          <input type="text" class="popup__name">
-        </div>
-        <div class="popup__edit-area">
-          <input type="text" class="popup__description">
-        </div>
+      <form class="popup__edit" method="post" name="profile_edit_form">
+        <input type="text" class="popup__field popup__field_name" name="profile_name" placeholder="Введите ваше имя"
+          required>
+        <input type="text" class="popup__field popup__field_description" name="profile__description"
+          placeholder="Введите ваш род занятий" required>
         <button class="popup__submit-button" type="submit" aria-label="сохранить">Сохранить</button>
       </form>
     </div>

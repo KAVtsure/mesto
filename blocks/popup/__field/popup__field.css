@@ -1,6 +1,7 @@
-.popup__name {
+.popup__field {
     margin: 0;
     padding: 0;
+    width: 100%;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -8,4 +9,10 @@
     line-height: 1.21;
     color: #000000;
     border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    padding-bottom: 13px;
+}
+
+.popup__field:last-of-type {
+    padding-top: 30px;
 }
