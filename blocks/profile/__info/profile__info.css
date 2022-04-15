@@ -7,7 +7,7 @@
     position: relative;
     grid-template-areas:
         "profile__name profile__edit-button"
-        "profile__description .";
+        "profile__description profile__description";
 }
 
 @media screen and (max-width: 720px) {
@@ -15,8 +15,5 @@
         margin: 26px auto 36px;
         row-gap: 10px;
         max-height: 54px;
-        grid-template-areas:
-            "profile__name profile__edit-button"
-            "profile__description";
     }
 }
