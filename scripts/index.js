@@ -7,7 +7,6 @@ const buttonAdd = document.querySelector('.profile__add-button');
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 
 //Модальные окна
-// const modalWindow = document.querySelector('.popup');
 const popupProfileEdit = document.querySelector('.popup_profile-edit');
 const popupElementEdit = document.querySelector('.popup_element-edit');
 const popupImage = document.querySelector('.popup_image');
