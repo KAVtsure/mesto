@@ -2,6 +2,7 @@
     margin: 0 auto 0 30px;
     padding: 0;
     display: grid;
+    max-width: 336px;
     max-height: 73px;
     gap: 5px 10px;
     position: relative;
@@ -15,5 +16,6 @@
         margin: 26px auto 36px;
         row-gap: 10px;
         max-height: 54px;
+        max-width: 282px;
     }
 }
