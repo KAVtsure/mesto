@@ -3,4 +3,6 @@
     object-fit: cover;
     width: 100%;
     min-height: 282px;
+    cursor: pointer;
+   
 }
