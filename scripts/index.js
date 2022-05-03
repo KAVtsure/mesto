@@ -56,19 +56,19 @@ function render() {
 
 render();
 
-function handleRemoveElement(evt) {
-    const element = evt.target.closest('.element');
+function handleRemoveElement(event) {
+    const element = event.target.closest('.element');
     element.remove();
 }
 
-function handleLikeElement(evt) {
-    const element = evt.target.closest('.element__like');
+function handleLikeElement(event) {
+    const element = event.target.closest('.element__like');
     element.classList.toggle('element__like_enable');
 }
 
 
-function handleAddElement(evt) {
-    evt.preventDefault();
+function handleAddElement(event) {
+    event.preventDefault();
     const elementAdd = getElement({ name: placeInput.value, link: imageLinkInput.value });
     listContainer.prepend(elementAdd);
     closeModalWindow(popupElementEdit);
@@ -91,8 +91,8 @@ buttonAdd.addEventListener('click', () => {
 });
 
 // Обработчик «отправки» формы профиля
-function handleSubmitEditProfile(evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+function handleSubmitEditProfile(event) {
+    event.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     profileName.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
     closeModalWindow(popupProfileEdit);
@@ -102,12 +102,25 @@ profileEditForm.addEventListener('submit', handleSubmitEditProfile);
 // Открытие модального окна
 function openModalWindow(modalWindow) {
     modalWindow.classList.add('popup_opened');
+    document.addEventListener('keydown', closeModalWindowEsc);
 }
 
 // Закрытие модального окна
 function closeModalWindow(modalWindow) {
     modalWindow.classList.remove('popup_opened');
+    document.removeEventListener('keydown', closeModalWindowEsc);
 }
+
+// Вносит в поля формы текущие значения профиля пользователя
+function handleOpenProfileEdit() {
+    nameInput.value = profileName.textContent;
+    jobInput.value = profileDescription.textContent;
+    openModalWindow(popupProfileEdit);
+}
+buttonEditProfile.addEventListener('click', () => {
+    handleOpenProfileEdit();
+    enableValidation(config);
+});
 
 // Закрытие модальных окон по "крестику"
 const popups = document.querySelectorAll('.popup');
@@ -117,10 +130,17 @@ Array.from(popupCloseButtons).forEach(btn => btn.addEventListener('click', () =>
 }
 ));
 
-// Вносит в поля формы текущие значения профиля пользователя
-function handleOpenProfileEdit() {
-    nameInput.value = profileName.textContent;
-    jobInput.value = profileDescription.textContent;
-    openModalWindow(popupProfileEdit);
-}
-buttonEditProfile.addEventListener('click', handleOpenProfileEdit);
+//Закрытие по оверлею
+Array.from(popups).forEach((modalWindow) => modalWindow.addEventListener('mousedown', (event) => {
+    if (event.target.classList.contains('popup_opened')) {
+        closeModalWindow(modalWindow);
+    }
+}))
+
+//Закрытие по Esc
+function closeModalWindowEsc(event) {
+    if (event.key === 'Escape') {
+        modalWindowOpen = document.querySelector('.popup_opened');
+        closeModalWindow(modalWindowOpen);
+    }
+};
