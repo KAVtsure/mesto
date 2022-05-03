@@ -33,8 +33,8 @@
 @import url(../blocks/popup/__field/popup__field.css);
 @import url(../blocks/popup/__field/_type/popup__field_type_error.css);
 @import url(../blocks/popup/__field/_name/popup__field_name.css);
-@import url(../blocks/popup/__field/_error/popup__field_error.css);
-@import url(../blocks/popup/__field/_error/popup__field_error_visible.css);
+@import url(../blocks/popup/__field-error/popup__field-error.css);
+@import url(../blocks/popup/__field-error/_visible/popup__field-error_visible.css);
 @import url(../blocks/popup/__field/_description/popup__field_description.css);
 @import url(../blocks/popup/__submit-button/popup__submit-button.css);
 @import url(../blocks/popup/__submit-button/_disabled/popup__submit-button_disabled.css);
