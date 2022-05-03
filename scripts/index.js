@@ -5,6 +5,7 @@ const template = document.querySelector('.template');
 //Кнопки
 const buttonAdd = document.querySelector('.profile__add-button');
 const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonSubmitNewElement = document.querySelector('.popup__submit-button_add');
 
 //Модальные окна
 const popupProfileEdit = document.querySelector('.popup_profile-edit');
@@ -29,7 +30,7 @@ const nameInput = profileEditForm.querySelector('.popup__field_name');
 const jobInput = profileEditForm.querySelector('.popup__field_description');
 
 
-function getElement(item) {
+function getCardElement(item) {
     const newElement = template.content.cloneNode(true);
     const titleElement = newElement.querySelector('.element__title');
     const imageElement = newElement.querySelector('.element__image');
@@ -50,7 +51,7 @@ function getElement(item) {
 }
 
 function render() {
-    const cards = initialCards.map(getElement);
+    const cards = initialCards.map(getCardElement);
     listContainer.prepend(...cards);
 }
 
@@ -69,12 +70,13 @@ function handleLikeElement(event) {
 
 function handleAddElement(event) {
     event.preventDefault();
-    const elementAdd = getElement({ name: placeInput.value, link: imageLinkInput.value });
+    const elementAdd = getCardElement({ name: placeInput.value, link: imageLinkInput.value });
     listContainer.prepend(elementAdd);
     closeModalWindow(popupElementEdit);
     placeInput.value = '';
     imageLinkInput.value = '';
-
+    buttonSubmitNewElement.setAttribute('disabled', 'disabled');
+    buttonSubmitNewElement.classList.add('popup__submit-button_disabled');
 }
 elementAddForm.addEventListener('submit', handleAddElement);
 
@@ -119,7 +121,7 @@ function handleOpenProfileEdit() {
 }
 buttonEditProfile.addEventListener('click', () => {
     handleOpenProfileEdit();
-    enableValidation(config);
+    checkInputValidityOpenPopup(profileEditForm);
 });
 
 // Закрытие модальных окон по "крестику"

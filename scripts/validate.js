@@ -77,4 +77,12 @@ function hasInvalidInput(inputs) {
     })
 }
 
-
+//проверка валидности полей при открытии модального окна
+function checkInputValidityOpenPopup(form) {
+    const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+    const submitButton = form.querySelector(config.submitButtonSelector);
+    inputs.forEach((input) => {
+        checkInputValidity(form, input, config);
+        toggleButtonState(inputs, submitButton, config);
+    });
+}

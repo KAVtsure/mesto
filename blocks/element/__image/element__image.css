@@ -4,5 +4,5 @@
     width: 100%;
     min-height: 282px;
     cursor: pointer;
-   
+    min-width: 282px;
 }
