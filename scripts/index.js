@@ -1,6 +1,12 @@
+import Card from './Card.js';
+import { initialCards } from './cards.js';
+import FormValidator from './FormValidator.js';
+import { openModalWindow, closeModalWindow } from './utils.js';
+
+
+
 // Для вставки элементов в разметку
 const listContainer = document.querySelector('.elements__list');
-const template = document.querySelector('.template');
 
 //Кнопки
 const buttonAdd = document.querySelector('.profile__add-button');
@@ -10,10 +16,6 @@ const buttonSubmitNewElement = document.querySelector('.popup__submit-button_add
 //Модальные окна
 const popupProfileEdit = document.querySelector('.popup_profile-edit');
 const popupElementEdit = document.querySelector('.popup_element-edit');
-const popupImage = document.querySelector('.popup_image');
-const popupImageZoom = popupImage.querySelector('.popup__image-zoom');
-const popupImageTitle = popupImage.querySelector('.popup__image-title');
-
 
 //Данные профиля
 const profileName = document.querySelector('.profile__name');
@@ -29,49 +31,38 @@ const imageLinkInput = popupElementEdit.querySelector('.popup__field_image-link'
 const nameInput = profileEditForm.querySelector('.popup__field_name');
 const jobInput = profileEditForm.querySelector('.popup__field_description');
 
-
-function getCardElement(item) {
-    const newElement = template.content.cloneNode(true);
-    const titleElement = newElement.querySelector('.element__title');
-    const imageElement = newElement.querySelector('.element__image');
-    const buttonRemove = newElement.querySelector(".element__delete");
-    const buttonLike = newElement.querySelector('.element__like');
-
-    titleElement.textContent = item.name;
-    imageElement.src = item.link;
-    imageElement.alt = item.name;
-
-    buttonRemove.addEventListener('click', handleRemoveElement);
-    buttonLike.addEventListener('click', handleLikeElement);
-    imageElement.addEventListener('click', () => {
-        handleOpenPopupImage(item);
-    });
-
-    return newElement;
-}
+const config = {
+    formSelector: '.popup__edit',
+    inputSelector: '.popup__field',
+    submitButtonSelector: '.popup__submit-button',
+    inactiveButtonClass: 'popup__submit-button_disabled',
+    inputErrorClass: 'popup__field_type_error',
+    errorClass: 'popup__field-error_visible'
+};
 
 function render() {
-    const cards = initialCards.map(getCardElement);
-    listContainer.prepend(...cards);
+    initialCards.map((item) => {
+        const card = new Card(item, '.template');
+        const cardElemnt = card.generateCard();
+        listContainer.prepend(cardElemnt);
+    });
+
 }
 
 render();
 
-function handleRemoveElement(event) {
-    const element = event.target.closest('.element');
-    element.remove();
-}
+const profileEditFormValid = new FormValidator (config, profileEditForm);
+const elementAddFormValid = new FormValidator (config, elementAddForm);
 
-function handleLikeElement(event) {
-    const element = event.target.closest('.element__like');
-    element.classList.toggle('element__like_enable');
-}
+//включение валидации форм профиля и добавления карточки
+profileEditFormValid.enableValidation();
+elementAddFormValid.enableValidation();
 
-
+//добавление новой карточки
 function handleAddElement(event) {
     event.preventDefault();
-    const elementAdd = getCardElement({ name: placeInput.value, link: imageLinkInput.value });
-    listContainer.prepend(elementAdd);
+    const elementAdd = new Card({ name: placeInput.value, link: imageLinkInput.value }, '.template');
+    listContainer.prepend(elementAdd.generateCard());
     closeModalWindow(popupElementEdit);
     placeInput.value = '';
     imageLinkInput.value = '';
@@ -79,13 +70,6 @@ function handleAddElement(event) {
     buttonSubmitNewElement.classList.add('popup__submit-button_disabled');
 }
 elementAddForm.addEventListener('submit', handleAddElement);
-
-function handleOpenPopupImage(item) {
-    popupImageZoom.src = item.link;
-    popupImageTitle.textContent = item.name;
-    popupImageZoom.alt = item.name;
-    openModalWindow(popupImage);
-}
 
 // Открытие окна добавления элемента
 buttonAdd.addEventListener('click', () => {
@@ -101,18 +85,6 @@ function handleSubmitEditProfile(event) {
 }
 profileEditForm.addEventListener('submit', handleSubmitEditProfile);
 
-// Открытие модального окна
-function openModalWindow(modalWindow) {
-    modalWindow.classList.add('popup_opened');
-    document.addEventListener('keydown', closeModalWindowEsc);
-}
-
-// Закрытие модального окна
-function closeModalWindow(modalWindow) {
-    modalWindow.classList.remove('popup_opened');
-    document.removeEventListener('keydown', closeModalWindowEsc);
-}
-
 // Вносит в поля формы текущие значения профиля пользователя
 function handleOpenProfileEdit() {
     nameInput.value = profileName.textContent;
@@ -121,7 +93,7 @@ function handleOpenProfileEdit() {
 }
 buttonEditProfile.addEventListener('click', () => {
     handleOpenProfileEdit();
-    checkInputValidityOpenPopup(profileEditForm);
+    profileEditFormValid.checkInputValidityOpenPopup();
 });
 
 // Закрытие модальных окон по "крестику"
@@ -139,10 +111,3 @@ Array.from(popups).forEach((modalWindow) => modalWindow.addEventListener('moused
     }
 }))
 
-//Закрытие по Esc
-function closeModalWindowEsc(event) {
-    if (event.key === 'Escape') {
-        modalWindowOpen = document.querySelector('.popup_opened');
-        closeModalWindow(modalWindowOpen);
-    }
-};
