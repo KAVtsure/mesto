@@ -56,7 +56,7 @@ export default class FormValidator {
     }
 
     //проверка валидности полей при открытии модального окна
-    checkInputValidityOpenPopup = () => {
+    checkInputValidityOpenClosePopup = () => {
         this._inputs.forEach((input) => {
             this._hideInputError(input);
             this._toggleButtonState();

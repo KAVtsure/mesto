@@ -18,4 +18,19 @@ function closeModalWindowEsc(event) {
     }
 };
 
+// Закрытие модальных окон по "крестику"
+const popups = document.querySelectorAll('.popup');
+const popupCloseButtons = document.querySelectorAll('.popup__close-button');
+Array.from(popupCloseButtons).forEach(btn => btn.addEventListener('click', () => {
+    Array.from(popups).forEach(closeModalWindow);
+}
+));
+
+//Закрытие по оверлею
+Array.from(popups).forEach((modalWindow) => modalWindow.addEventListener('mousedown', (event) => {
+    if (event.target.classList.contains('popup_opened')) {
+        closeModalWindow(modalWindow);
+    }
+}))
+
 export { openModalWindow, closeModalWindow };
