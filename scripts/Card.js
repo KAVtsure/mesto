@@ -31,12 +31,19 @@ export default class Card {
     generateCard = () => {
         this._element = this._getTemplate();
 
+        // this._element.querySelector('.element__title').textContent = this._name;
+        // this._element.querySelector('.element__image').src = this._link;
+        // this._element.querySelector('.element__image').alt = this._name;
         
         this._cardTitle.textContent = this._name;
         this._cardImage.src = this._link;
         this._cardImage.alt = this._name;
         this._setEventListeners();
 
+        console.log(this._cardImage.src);
+        console.log(this._cardImage.alt);
+        console.log(this._cardTitle.textContent);
+        
         return this._element;
     }
 
