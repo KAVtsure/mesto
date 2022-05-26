@@ -5,8 +5,8 @@ const popupImageZoom = popupImage.querySelector('.popup__image-zoom');
 const popupImageTitle = popupImage.querySelector('.popup__image-title');
 
 export default class Card {
-    
-    constructor({name, link}, templateSelector) {
+
+    constructor({ name, link }, templateSelector) {
         this._name = name;
         this._link = link;
         this._template = templateSelector;
@@ -29,24 +29,37 @@ export default class Card {
     }
 
     generateCard = () => {
-        this._element = this._getTemplate();
-
         // this._element.querySelector('.element__title').textContent = this._name;
         // this._element.querySelector('.element__image').src = this._link;
         // this._element.querySelector('.element__image').alt = this._name;
-        
+
         this._cardTitle.textContent = this._name;
         this._cardImage.src = this._link;
         this._cardImage.alt = this._name;
+
+        this._element = this._getTemplate();
         this._setEventListeners();
 
-        console.log(this._cardImage.src);
-        console.log(this._cardImage.alt);
-        console.log(this._cardTitle.textContent);
-        
         return this._element;
     }
 
+    _setEventListeners = () => {
+
+        this._cardDelete = this._element.querySelector('.element__delete');
+        this._cardDelete.addEventListener('click', () => {
+            this._handleRemoveElement();
+        });
+
+        this._cardLike = this._element.querySelector('.element__like');
+        this._cardLike.addEventListener('click', () => {
+            this._handleLikeElement();
+        });
+
+        this._cardImageShow = this._element.querySelector('.element__image');
+        this._cardImageShow.addEventListener('click', () => {
+            this._handleOpenPopupImage();
+        });
+    };
 
     _handleOpenPopupImage = () => {
         popupImageZoom.src = this._link;
@@ -60,19 +73,6 @@ export default class Card {
     }
 
     _handleLikeElement = () => {
-        this._element.querySelector('.element__like').classList.toggle('element__like_enable');
+        this._cardLike.classList.toggle('element__like_enable');
     }
-
-    _setEventListeners = () => {
-        this._element.querySelector('.element__delete').addEventListener('click', () => {
-            this._handleRemoveElement();
-        });
-        this._element.querySelector('.element__like').addEventListener('click', () => {
-            this._handleLikeElement();
-        });
-        this._element.querySelector('.element__image').addEventListener('click', () => {
-            this._handleOpenPopupImage();
-        });
-    };
-
 }

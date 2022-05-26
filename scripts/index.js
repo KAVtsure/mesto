@@ -10,9 +10,7 @@ import { openModalWindow, closeModalWindow } from '../utils/utils.js';
 function createCard(item) {
     const card = new Card(item, '.template');
     const cardElement = card.generateCard();
-    // console.log(cardElement);
     return cardElement;
-
 }
 
 function render() {
