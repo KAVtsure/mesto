@@ -5,17 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="pages/index.css">
+  <!-- <link rel="stylesheet" href="pages/index.css"> -->
   <title>Место</title>
 </head>
 
 <body class="base">
   <header class="header">
-    <img class="header__logo" src="./images/logo.svg" alt="Логотип">
+    <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип">
   </header>
   <main class="content">
     <section class="profile">
-      <img class="profile__avatar" src="./images/Avatar.png" alt="Аватар">
+      <img class="profile__avatar" src="<%=require('./images/Avatar.png')%>" alt="Аватар">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <p class="profile__description">Исследователь океана</p>
@@ -107,7 +107,7 @@
   </template>
 
   <!-- <script src="./scripts/cards.js"></script> -->
-  <script src="./scripts/index.js" type="module"></script>
+  <!-- <script src="./pages/index.js" type="module"></script> -->
   <!-- <script src="./scripts/validate.js"></script> -->
 </body>
 

@@ -36,6 +36,7 @@ const initialCards = [
 
 // Для вставки элементов в разметку
 const listContainer = document.querySelector('.elements__list');
+const listContainerSelector = '.elements__list';
 
 //Кнопки
 const buttonAdd = document.querySelector('.profile__add-button');
@@ -45,6 +46,7 @@ const buttonEditProfile = document.querySelector('.profile__edit-button');
 //Модальные окна
 const popupProfileEdit = document.querySelector('.popup_profile-edit');
 const popupElementEdit = document.querySelector('.popup_element-edit');
+const popupImage = document.querySelector('.popup_image');
 
 //Данные профиля
 const profileName = document.querySelector('.profile__name');
@@ -61,7 +63,6 @@ const nameInput = profileEditForm.querySelector('.popup__field_name');
 const jobInput = profileEditForm.querySelector('.popup__field_description');
 
 export {
-    config, initialCards, listContainer, buttonAdd, buttonEditProfile,
-    popupProfileEdit, popupElementEdit, profileName, profileDescription,
-    profileEditForm, elementAddForm, placeInput, imageLinkInput, nameInput, jobInput
+    config, initialCards, listContainerSelector, buttonAdd, buttonEditProfile,
+    profileEditForm, elementAddForm, nameInput, jobInput
 };

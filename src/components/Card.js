@@ -1,15 +1,10 @@
-import { openModalWindow } from '../utils/utils.js';
-
-const popupImage = document.querySelector('.popup_image');
-const popupImageZoom = popupImage.querySelector('.popup__image-zoom');
-const popupImageTitle = popupImage.querySelector('.popup__image-title');
-
 export default class Card {
 
-    constructor({ name, link }, templateSelector) {
+    constructor({ name, link }, templateSelector, handleCardClick) {
         this._name = name;
         this._link = link;
         this._template = templateSelector;
+        this._handleCardClick = handleCardClick;
 
         this._cardImage = document
             .querySelector(this._template)
@@ -57,16 +52,17 @@ export default class Card {
 
         this._cardImageShow = this._element.querySelector('.element__image');
         this._cardImageShow.addEventListener('click', () => {
-            this._handleOpenPopupImage();
+            this._handleCardClick(this._name, this._link);
         });
+
     };
 
-    _handleOpenPopupImage = () => {
-        popupImageZoom.src = this._link;
-        popupImageTitle.textContent = this._name;
-        popupImageZoom.alt = this._name;
-        openModalWindow(popupImage);
-    }
+    // _handleOpenPopupImage = () => {
+    //     popupImageZoom.src = this._link;
+    //     popupImageTitle.textContent = this._name;
+    //     popupImageZoom.alt = this._name;
+    //     openModalWindow(popupImage);
+    // }
 
     _handleRemoveElement = () => {
         this._element.remove();
