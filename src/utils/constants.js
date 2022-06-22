@@ -41,6 +41,7 @@ const listContainerSelector = '.elements__list';
 //Кнопки
 const buttonAdd = document.querySelector('.profile__add-button');
 const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonEditAvatar = document.querySelector('.profile__avatar-button');
 // const buttonSubmitNewElement = document.querySelector('.popup__submit-button_add');
 
 //Модальные окна
@@ -55,6 +56,7 @@ const profileDescription = document.querySelector('.profile__description');
 //формы
 const profileEditForm = document.querySelector('.popup__edit_profile');
 const elementAddForm = document.querySelector('.popup__edit_element');
+const avatarEditForm = document.querySelector('.popup__edit_avatar');
 
 // поля ввода формы элемента
 const placeInput = popupElementEdit.querySelector('.popup__field_place');
@@ -63,6 +65,6 @@ const nameInput = profileEditForm.querySelector('.popup__field_name');
 const jobInput = profileEditForm.querySelector('.popup__field_description');
 
 export {
-    config, initialCards, listContainerSelector, buttonAdd, buttonEditProfile,
-    profileEditForm, elementAddForm, nameInput, jobInput
+    config, initialCards, listContainerSelector, buttonAdd, buttonEditProfile, buttonEditAvatar, 
+    profileEditForm, elementAddForm, avatarEditForm, nameInput, jobInput
 };
