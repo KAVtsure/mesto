@@ -21,4 +21,5 @@
 * Модальные окна
 * Рефакторинг кода с помощью ООП
 
+
 [Ссылка на GitHub Pages](https://kavtsure.github.io/mesto/)

@@ -13,6 +13,9 @@ import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 import Api from '../components/Api.js';
 
 let userId;
+
+
+//Api
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-43',
     headers: {
@@ -21,12 +24,16 @@ const api = new Api({
     }
 });
 
+
+//Информация о пользователе
 const user = new UserInfo({
     nameSelector: '.profile__name',
     descriptionSelector: '.profile__description',
     avatarSelector: '.profile__avatar'
 });
 
+
+//Загрузка данных с сервера 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([UserInfo, InitialCards]) => {
 
@@ -40,6 +47,8 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
         console.log(err);
     })
 
+
+//Создание карточек    
 function createCard(item) {
 
     const card = new Card({
@@ -52,7 +61,6 @@ function createCard(item) {
             api.likeCard(cardId)
                 .then((res) => {
                     card.handleSetLike(res);
-                    // card.handleLikeElement(res);
                 })
                 .catch((err) => {
                     console.log(err); // выведем ошибку в консоль
@@ -62,7 +70,6 @@ function createCard(item) {
             api.unlikeCard(cardId)
                 .then((res) => {
                     card.handleSetLike(res);
-                    // card.handleLikeElement(res);
                 })
                 .catch((err) => {
                     console.log(err); // выведем ошибку в консоль
@@ -87,6 +94,8 @@ function createCard(item) {
     return cardElement;
 }
 
+
+//Секция с карточками
 const cardList = new Section({
     renderer: (item) => {
         const newCard = createCard(item);
@@ -97,10 +106,12 @@ const cardList = new Section({
 // cardList.renderedItems();
 
 
+//Попап с картинкой
 const imagePopup = new PopupWithImage('.popup_image');
 imagePopup.setEventListeners();
 
 
+//Валидация
 const profileEditFormValid = new FormValidator(config, profileEditForm);
 const elementAddFormValid = new FormValidator(config, elementAddForm);
 const avatarEditFormValidator = new FormValidator(config, avatarEditForm);
@@ -110,9 +121,7 @@ elementAddFormValid.enableValidation();
 avatarEditFormValidator.enableValidation();
 
 
-
-// console.log(user);
-
+//Профиль
 function handleOpenProfileEdit() {
     const profileInfo = user.getUserInfo();
     nameInput.value = profileInfo.name;
@@ -128,7 +137,6 @@ const profileEditPopup = new PopupWithForm('.popup_profile-edit',
                 .then((res) => {
                     user.setUserInfo(res);
                     profileEditPopup.close();
-                    // user.setUserInfo(data['profile_name'], data['profile__description']);
                 })
                 .catch((err) => {
                     console.log(err); // выведем ошибку в консоль
@@ -147,6 +155,7 @@ buttonEditProfile.addEventListener('click', () => {
 })
 
 
+//Карточки
 const elementEditPopup = new PopupWithForm('.popup_element-edit',
     {
         handleSubmitForm: (item) => {
@@ -173,6 +182,8 @@ buttonAdd.addEventListener('click', () => {
     elementEditPopup.open();
 })
 
+
+//Аватар
 const avatarEditPopup = new PopupWithForm('.popup_avatar-edit',
     {
         handleSubmitForm: (data) => {
@@ -199,54 +210,6 @@ buttonEditAvatar.addEventListener('click', () => {
 })
 
 
+//Окно подтверждения
 const elementDeleteConfirmPopup = new PopupWithConfirmation('.popup_confirmation');
-
 elementDeleteConfirmPopup.setEventListeners();
-
-
-
-
-// api.getInitialCards()
-//     .then((items) => {
-//         const cardList = new Section({
-//             items,
-//             renderer: (item) => {
-//                 const newCard = createCard(item);
-//                 cardList.addItem(newCard);
-//             }
-//         }, listContainerSelector);
-//     })
-//     .catch((err) => {
-//         console.log(err); // выведем ошибку в консоль
-//     });
-
-// function addTaskHandler(taskName) {
-//     api.addTask(taskName)
-//         .then((res) => {
-//             const cardList = new Section({
-//                 items,
-//                 renderer: (item) => {
-//                     const newCard = createCard(item);
-//                     cardList.addItem(newCard);
-//                 }
-//             }, listContainerSelector);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }
-
-// function deleteTaskHandler(taskId) {
-//     api.deleteTask(taskId);
-// }
-
-// // api.getUserInfo()
-// //     .then((UserInfo) => {
-// //         api.getInitialCards()
-// //             .then((cards) => {
-
-// //             })
-// //     })
-
-// Promise.all([api.getUserInfo(), api.getInitialCards()])
-// .then(([UserInfo, cards]))
