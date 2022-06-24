@@ -1,6 +1,6 @@
 export default class Api {
-    constructor({ url, headers }) {
-        this._url = url;
+    constructor({ baseUrl, headers }) {
+        this._url = baseUrl;
         this._headers = headers;
         this._urlUser = `${this._url}/users/me`;
         this._urlCards = `${this._url}/cards`;
@@ -64,13 +64,13 @@ export default class Api {
             });
     }
 
-    saveUserInfo(data) {
+    saveUserInfo(userName, userDescription) {
         return fetch(this._urlUser, {
             headers: this._headers,
             method: 'PATCH',
             body: JSON.stringify({
-                name: data.userName,
-                about: data.userDescription
+                name: userName,
+                about: userDescription
             })
         })
             .then(res => {

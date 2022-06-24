@@ -65,6 +65,6 @@ const nameInput = profileEditForm.querySelector('.popup__field_name');
 const jobInput = profileEditForm.querySelector('.popup__field_description');
 
 export {
-    config, initialCards, listContainerSelector, buttonAdd, buttonEditProfile, buttonEditAvatar, 
+    config, listContainerSelector, buttonAdd, buttonEditProfile, buttonEditAvatar,
     profileEditForm, elementAddForm, avatarEditForm, nameInput, jobInput
 };

@@ -9,9 +9,10 @@ import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
-import PopupWithConfirmation from '../components/PopupWithConfirmation';
+import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 import Api from '../components/Api.js';
 
+let userId;
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-43',
     headers: {
@@ -20,9 +21,19 @@ const api = new Api({
     }
 });
 
+const user = new UserInfo({
+    nameSelector: '.profile__name',
+    descriptionSelector: '.profile__description',
+    avatarSelector: '.profile__avatar'
+});
+
 Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([UserInfo, InitialCards]) => {
+
+        userId = UserInfo._id;
+        console.log(userId);
         user.setUserInfo(UserInfo);
+
         cardList.renderedItems(InitialCards);
     })
     .catch((err) => {
@@ -35,11 +46,23 @@ function createCard(item) {
         cardData: item,
         handleCardClick: (name, link) => {
             imagePopup.open(name, link);
+            console.log(imagePopup)
         },
         handleLikeClick: (cardId) => {
             api.likeCard(cardId)
-                .then((item) => {
-                    card.handleSetLike(item);
+                .then((res) => {
+                    card.handleSetLike(res);
+                    // card.handleLikeElement(res);
+                })
+                .catch((err) => {
+                    console.log(err); // выведем ошибку в консоль
+                })
+        },
+        handleDeleteLikeClick: (cardId) => {
+            api.unlikeCard(cardId)
+                .then((res) => {
+                    card.handleSetLike(res);
+                    // card.handleLikeElement(res);
                 })
                 .catch((err) => {
                     console.log(err); // выведем ошибку в консоль
@@ -71,7 +94,7 @@ const cardList = new Section({
     }
 }, listContainerSelector);
 
-cardList.renderedItems();
+// cardList.renderedItems();
 
 
 const imagePopup = new PopupWithImage('.popup_image');
@@ -86,11 +109,9 @@ profileEditFormValid.enableValidation();
 elementAddFormValid.enableValidation();
 avatarEditFormValidator.enableValidation();
 
-const user = new UserInfo({
-    nameSelector: '.profile__name',
-    descriptionSelector: '.profile__description',
-    avatarSelector: '.profile__avatar'
-});
+
+
+// console.log(user);
 
 function handleOpenProfileEdit() {
     const profileInfo = user.getUserInfo();
@@ -103,9 +124,9 @@ const profileEditPopup = new PopupWithForm('.popup_profile-edit',
     {
         handleSubmitForm: (data) => {
             profileEditPopup.submitLoading('Сохранение...');
-            api.saveUserInfo(data)
-                .then((data) => {
-                    user.setUserInfo(data);
+            api.saveUserInfo(data['profile_name'], data['profile__description'])
+                .then((res) => {
+                    user.setUserInfo(res);
                     profileEditPopup.close();
                     // user.setUserInfo(data['profile_name'], data['profile__description']);
                 })
@@ -130,11 +151,7 @@ const elementEditPopup = new PopupWithForm('.popup_element-edit',
     {
         handleSubmitForm: (item) => {
             elementEditPopup.submitLoading('Сохранение...');
-            const newElement = {
-                name: item['place_name'],
-                link: item['image-link']
-            }
-            api.addCard(newElement)
+            api.addCard(item['place_name'], item['image-link'])
                 .then((item) => {
                     cardList.addItem(createCard(item));
                     elementEditPopup.close();
@@ -185,6 +202,8 @@ buttonEditAvatar.addEventListener('click', () => {
 const elementDeleteConfirmPopup = new PopupWithConfirmation('.popup_confirmation');
 
 elementDeleteConfirmPopup.setEventListeners();
+
+
 
 
 // api.getInitialCards()
