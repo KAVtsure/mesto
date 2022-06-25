@@ -35,13 +35,13 @@ const user = new UserInfo({
 
 //Загрузка данных с сервера 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
-    .then(([UserInfo, InitialCards]) => {
+    .then(([userInfo, initialCards]) => {
 
-        userId = UserInfo._id;
+        userId = userInfo._id;
         console.log(userId);
-        user.setUserInfo(UserInfo);
+        user.setUserInfo(userInfo);
 
-        cardList.renderedItems(InitialCards);
+        cardList.renderedItems(initialCards);
     })
     .catch((err) => {
         console.log(err);
@@ -55,7 +55,7 @@ function createCard(item) {
         cardData: item,
         handleCardClick: (name, link) => {
             imagePopup.open(name, link);
-            console.log(imagePopup)
+
         },
         handleLikeClick: (cardId) => {
             api.likeCard(cardId)
@@ -77,7 +77,7 @@ function createCard(item) {
         },
         handleDeleteClick: (cardId) => {
             elementDeleteConfirmPopup.open();
-            elementDeleteConfirmPopup.submtClickHandlerCallback(() => {
+            elementDeleteConfirmPopup.setSubmitHandler(() => {
                 api.deleteCard(cardId)
                     .then(() => {
                         elementDeleteConfirmPopup.close();
@@ -112,13 +112,26 @@ imagePopup.setEventListeners();
 
 
 //Валидация
-const profileEditFormValid = new FormValidator(config, profileEditForm);
-const elementAddFormValid = new FormValidator(config, elementAddForm);
 const avatarEditFormValidator = new FormValidator(config, avatarEditForm);
-
-profileEditFormValid.enableValidation();
-elementAddFormValid.enableValidation();
 avatarEditFormValidator.enableValidation();
+
+const formValidators = {}
+
+// Включение валидации
+const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector))
+    formList.forEach((formElement) => {
+        const validator = new FormValidator(config, formElement)
+        // получаем данные из атрибута `name` у формы
+        const formName = formElement.getAttribute('name')
+
+        // вот тут в объект записываем под именем формы
+        formValidators[formName] = validator;
+        validator.enableValidation();
+    });
+};
+
+enableValidation(config);
 
 
 //Профиль
@@ -126,13 +139,13 @@ function handleOpenProfileEdit() {
     const profileInfo = user.getUserInfo();
     nameInput.value = profileInfo.name;
     jobInput.value = profileInfo.description;
-    profileEditFormValid.checkInputValidityOpenClosePopup();
+    formValidators['profile_edit_form'].resetValidation();
 }
 
 const profileEditPopup = new PopupWithForm('.popup_profile-edit',
     {
         handleSubmitForm: (data) => {
-            profileEditPopup.submitLoading('Сохранение...');
+            profileEditPopup.renderLoading('Сохранение...');
             api.saveUserInfo(data['profile_name'], data['profile__description'])
                 .then((res) => {
                     user.setUserInfo(res);
@@ -142,7 +155,7 @@ const profileEditPopup = new PopupWithForm('.popup_profile-edit',
                     console.log(err); // выведем ошибку в консоль
                 })
                 .finally(() => {
-                    profileEditPopup.submitLoading('Сохранить');
+                    profileEditPopup.renderLoading('Сохранить');
                 })
         }
     }
@@ -159,17 +172,17 @@ buttonEditProfile.addEventListener('click', () => {
 const elementEditPopup = new PopupWithForm('.popup_element-edit',
     {
         handleSubmitForm: (item) => {
-            elementEditPopup.submitLoading('Сохранение...');
+            elementEditPopup.renderLoading('Сохранение...');
             api.addCard(item['place_name'], item['image-link'])
                 .then((item) => {
-                    cardList.addItem(createCard(item));
+                    cardList.renderCard(item);
                     elementEditPopup.close();
                 })
                 .catch((err) => {
                     console.log(err); // выведем ошибку в консоль
                 })
                 .finally(() => {
-                    elementEditPopup.submitLoading('Сохранить');
+                    elementEditPopup.renderLoading('Сохранить');
                 })
         }
     }
@@ -178,7 +191,7 @@ const elementEditPopup = new PopupWithForm('.popup_element-edit',
 elementEditPopup.setEventListeners();
 
 buttonAdd.addEventListener('click', () => {
-    elementAddFormValid.checkInputValidityOpenClosePopup();
+    formValidators['element_edit_form'].resetValidation();
     elementEditPopup.open();
 })
 
@@ -187,7 +200,7 @@ buttonAdd.addEventListener('click', () => {
 const avatarEditPopup = new PopupWithForm('.popup_avatar-edit',
     {
         handleSubmitForm: (data) => {
-            avatarEditPopup.submitLoading('Сохранение...');
+            avatarEditPopup.renderLoading('Сохранение...');
             api.updateAvatar(data['avatar-link'])
                 .then((data) => {
                     user.setUserInfo(data);
@@ -197,7 +210,7 @@ const avatarEditPopup = new PopupWithForm('.popup_avatar-edit',
                     console.log(err); // выведем ошибку в консоль
                 })
                 .finally(() => {
-                    avatarEditPopup.submitLoading('Сохранить');
+                    avatarEditPopup.renderLoading('Сохранить');
                 })
         }
     }
@@ -205,7 +218,7 @@ const avatarEditPopup = new PopupWithForm('.popup_avatar-edit',
 avatarEditPopup.setEventListeners();
 
 buttonEditAvatar.addEventListener('click', () => {
-    avatarEditFormValidator.checkInputValidityOpenClosePopup();
+    avatarEditFormValidator.resetValidation();
     avatarEditPopup.open();
 })
 
@@ -213,3 +226,12 @@ buttonEditAvatar.addEventListener('click', () => {
 //Окно подтверждения
 const elementDeleteConfirmPopup = new PopupWithConfirmation('.popup_confirmation');
 elementDeleteConfirmPopup.setEventListeners();
+
+
+// const profileEditFormValid = new FormValidator(config, profileEditForm);
+// const elementAddFormValid = new FormValidator(config, elementAddForm);
+// const avatarEditFormValidator = new FormValidator(config, avatarEditForm);
+
+// profileEditFormValid.enableValidation();
+// elementAddFormValid.enableValidation();
+// avatarEditFormValidator.enableValidation();

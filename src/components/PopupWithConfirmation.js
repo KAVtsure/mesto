@@ -16,11 +16,11 @@ export default class PopupWithConfirmation extends Popup {
         })
     }
 
-    submtClickHandlerCallback(action) {
+    setSubmitHandler(action) {
         this._submtClickHandler = action;
     }
 
-    submitLoading(textContentButton) {
+    changeButtonText(textContentButton) {
         this._submitButton.textContent = textContentButton;
     }
 }

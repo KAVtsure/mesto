@@ -1,15 +1,15 @@
 export default class FormValidator {
-    constructor(config, formSelector) {
+    constructor(config, form) {
         this._config = config;
-        this._formSelector = formSelector;
+        this._form = form;
         this._inputSelector = config.inputSelector;
         this._submitButtonSelector = config.submitButtonSelector;
         this._inactiveButtonClass = config.inactiveButtonClass;
         this._inputErrorClass = config.inputErrorClass;
         this._errorClass = config.errorClass;
 
-        this._inputs = Array.from(this._formSelector.querySelectorAll(this._inputSelector));
-        this._submitButton = this._formSelector.querySelector(this._submitButtonSelector);
+        this._inputs = Array.from(this._form.querySelectorAll(this._inputSelector));
+        this._submitButton = this._form.querySelector(this._submitButtonSelector);
     }
 
     //проверка валидности поля ввода
@@ -23,7 +23,7 @@ export default class FormValidator {
 
     //показ ошибки ввода
     _showInputError = (input, errorMessage) => {
-        const errorElement = this._formSelector.querySelector(`#${input.id}-error`);
+        const errorElement = this._form.querySelector(`#${input.id}-error`);
         input.classList.add(this._inputErrorClass);
         errorElement.textContent = errorMessage;
         errorElement.classList.add(this._errorClass);
@@ -31,7 +31,7 @@ export default class FormValidator {
 
     //скрытие ошибки ввода
     _hideInputError = (input) => {
-        const errorElement = this._formSelector.querySelector(`#${input.id}-error`);
+        const errorElement = this._form.querySelector(`#${input.id}-error`);
         input.classList.remove(this._inputErrorClass);
         errorElement.textContent = '';
         errorElement.classList.remove(this._errorClass);
@@ -56,10 +56,10 @@ export default class FormValidator {
     }
 
     //проверка валидности полей при открытии модального окна
-    checkInputValidityOpenClosePopup = () => {
+    resetValidation = () => {
+        this._toggleButtonState();
         this._inputs.forEach((input) => {
             this._hideInputError(input);
-            this._toggleButtonState();
         });
     }
 
@@ -74,13 +74,14 @@ export default class FormValidator {
         }
         )
     }
-    
+
     //включение валидации
     enableValidation = () => {
-        this._formSelector.addEventListener('submit', (event) => {
+        this._form.addEventListener('submit', (event) => {
             event.preventDefault();
         });
         this._setEventListeners();
     }
+
 }
 

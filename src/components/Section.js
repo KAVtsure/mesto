@@ -14,4 +14,15 @@ export default class Section {
         });
         return items;
     }
+
+    renderCard(item) {
+        this._renderer(item);
+    }
+
+    // addItem(item) {
+    //     const card = this._renderer(item)
+    //     this._container.prepend(card);
+    // }
+
+
 }
