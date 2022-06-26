@@ -56,7 +56,7 @@ export default class FormValidator {
     }
 
     //проверка валидности полей при открытии модального окна
-    resetValidation = () => {
+    resetValidation() {
         this._toggleButtonState();
         this._inputs.forEach((input) => {
             this._hideInputError(input);
@@ -84,4 +84,3 @@ export default class FormValidator {
     }
 
 }
-

@@ -112,9 +112,6 @@ imagePopup.setEventListeners();
 
 
 //Валидация
-const avatarEditFormValidator = new FormValidator(config, avatarEditForm);
-avatarEditFormValidator.enableValidation();
-
 const formValidators = {}
 
 // Включение валидации
@@ -123,7 +120,7 @@ const enableValidation = (config) => {
     formList.forEach((formElement) => {
         const validator = new FormValidator(config, formElement)
         // получаем данные из атрибута `name` у формы
-        const formName = formElement.getAttribute('name')
+        const formName = formElement.getAttribute('name');
 
         // вот тут в объект записываем под именем формы
         formValidators[formName] = validator;
@@ -218,7 +215,7 @@ const avatarEditPopup = new PopupWithForm('.popup_avatar-edit',
 avatarEditPopup.setEventListeners();
 
 buttonEditAvatar.addEventListener('click', () => {
-    avatarEditFormValidator.resetValidation();
+    formValidators["avatar_edit_form"].resetValidation();
     avatarEditPopup.open();
 })
 
